@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
 import { ThreeBackground } from "@/components/ThreeBackground";
 import { TiltCard } from "@/components/TiltCard";
+import { IntroSequence } from "@/components/IntroSequence";
+import { DevCredit } from "@/components/DevCredit";
 import {
   achievements,
   attendanceUrl,
@@ -37,8 +39,20 @@ type View = "landing" | "portal";
 type Theme = "dark" | "light" | "neon";
 
 function NecrackApp() {
+  const [introDone, setIntroDone] = useState(false);
   const [view, setView] = useState<View>("landing");
   const [theme, setThemeState] = useState<Theme>("dark");
+
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem("necrack_intro_seen") === "1") setIntroDone(true);
+    } catch {}
+  }, []);
+
+  const finishIntro = () => {
+    try { sessionStorage.setItem("necrack_intro_seen", "1"); } catch {}
+    setIntroDone(true);
+  };
   const [reg, setReg] = useState("");
   const [loading, setLoading] = useState(false);
   const [starting, setStarting] = useState(false);
@@ -117,6 +131,12 @@ function NecrackApp() {
     <>
       <ThreeBackground />
       <Toaster position="top-right" theme={theme === "light" ? "light" : "dark"} richColors closeButton />
+
+      <AnimatePresence>
+        {!introDone && <IntroSequence key="intro" onDone={finishIntro} />}
+      </AnimatePresence>
+
+      <DevCredit floating />
 
       {/* Floating watermark */}
       <div
