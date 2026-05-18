@@ -1,21 +1,19 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
 import { ThreeBackground } from "@/components/ThreeBackground";
 import { TiltCard } from "@/components/TiltCard";
 import { IntroSequence } from "@/components/IntroSequence";
 import { DevCredit } from "@/components/DevCredit";
 import {
+  achievements,
   attendanceUrl,
-  getAchievements,
   getStats,
-  getThemes,
   logUserAccess,
   resultUrl,
   saveStats,
 } from "@/lib/necrack";
-import { getRMMode, setRMMode, useReducedMotion, type RMMode } from "@/lib/reduced-motion";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -41,16 +39,11 @@ type View = "landing" | "portal";
 type Theme = "dark" | "light" | "neon";
 
 function NecrackApp() {
-  const reduced = useReducedMotion();
   const [introDone, setIntroDone] = useState(false);
   const [view, setView] = useState<View>("landing");
   const [theme, setThemeState] = useState<Theme>("dark");
-  const [rmMode, setRmModeState] = useState<RMMode>("system");
-  const themes = useMemo(() => getThemes(), []);
-  const achievements = useMemo(() => getAchievements(), []);
 
   useEffect(() => {
-    setRmModeState(getRMMode());
     try {
       if (sessionStorage.getItem("necrack_intro_seen") === "1") setIntroDone(true);
     } catch {}
@@ -280,37 +273,18 @@ function NecrackApp() {
           <div className="mb-6">
             <div className="text-sm font-semibold mb-3 uppercase tracking-wider">🎨 Theme</div>
             <div className="grid grid-cols-3 gap-2">
-              {themes.map(td => (
+              {(["dark", "light", "neon"] as Theme[]).map(t => (
                 <button
-                  key={td.id}
-                  onClick={() => { setTheme(td.id as Theme); toast.message(`Switched to ${td.label}`); }}
+                  key={t}
+                  onClick={() => { setTheme(t); toast.message(`Switched to ${t}`); }}
                   className={`py-3 rounded-xl border-2 capitalize font-semibold tracking-widest text-sm transition-all ${
-                    theme === td.id ? "border-primary text-primary bg-primary/10" : "border-border text-foreground/80"
+                    theme === t ? "border-primary text-primary bg-primary/10" : "border-border text-foreground/80"
                   }`}
                 >
-                  {td.label}
+                  {t}
                 </button>
               ))}
             </div>
-          </div>
-          <div className="mb-6">
-            <div className="text-sm font-semibold mb-3 uppercase tracking-wider">🌙 Reduced Motion</div>
-            <div className="grid grid-cols-3 gap-2">
-              {(["system", "on", "off"] as RMMode[]).map(m => (
-                <button
-                  key={m}
-                  onClick={() => { setRMMode(m); setRmModeState(m); toast.message(`Reduced motion: ${m}`); }}
-                  className={`py-3 rounded-xl border-2 capitalize font-semibold tracking-widest text-xs transition-all ${
-                    rmMode === m ? "border-primary text-primary bg-primary/10" : "border-border text-foreground/80"
-                  }`}
-                >
-                  {m}
-                </button>
-              ))}
-            </div>
-            <p className="text-[10px] text-muted-foreground mt-2">
-              Currently: {reduced ? "minimized animations" : "full animations"}
-            </p>
           </div>
           <div>
             <div className="text-sm font-semibold mb-3 uppercase tracking-wider">🏆 Achievements</div>
@@ -329,13 +303,6 @@ function NecrackApp() {
               })}
             </div>
           </div>
-          <Link
-            to="/admin"
-            onClick={() => setShowMenu(false)}
-            className="block mt-6 text-center text-xs text-muted-foreground hover:text-primary uppercase tracking-widest"
-          >
-            🔐 Admin dashboard
-          </Link>
         </div>
         <button onClick={() => setShowMenu(false)} className="mt-6 w-full py-3 rounded-xl border border-border text-primary font-semibold tracking-wider">
           Close
