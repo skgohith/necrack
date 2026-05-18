@@ -280,18 +280,37 @@ function NecrackApp() {
           <div className="mb-6">
             <div className="text-sm font-semibold mb-3 uppercase tracking-wider">🎨 Theme</div>
             <div className="grid grid-cols-3 gap-2">
-              {(["dark", "light", "neon"] as Theme[]).map(t => (
+              {themes.map(td => (
                 <button
-                  key={t}
-                  onClick={() => { setTheme(t); toast.message(`Switched to ${t}`); }}
+                  key={td.id}
+                  onClick={() => { setTheme(td.id as Theme); toast.message(`Switched to ${td.label}`); }}
                   className={`py-3 rounded-xl border-2 capitalize font-semibold tracking-widest text-sm transition-all ${
-                    theme === t ? "border-primary text-primary bg-primary/10" : "border-border text-foreground/80"
+                    theme === td.id ? "border-primary text-primary bg-primary/10" : "border-border text-foreground/80"
                   }`}
                 >
-                  {t}
+                  {td.label}
                 </button>
               ))}
             </div>
+          </div>
+          <div className="mb-6">
+            <div className="text-sm font-semibold mb-3 uppercase tracking-wider">🌙 Reduced Motion</div>
+            <div className="grid grid-cols-3 gap-2">
+              {(["system", "on", "off"] as RMMode[]).map(m => (
+                <button
+                  key={m}
+                  onClick={() => { setRMMode(m); setRmModeState(m); toast.message(`Reduced motion: ${m}`); }}
+                  className={`py-3 rounded-xl border-2 capitalize font-semibold tracking-widest text-xs transition-all ${
+                    rmMode === m ? "border-primary text-primary bg-primary/10" : "border-border text-foreground/80"
+                  }`}
+                >
+                  {m}
+                </button>
+              ))}
+            </div>
+            <p className="text-[10px] text-muted-foreground mt-2">
+              Currently: {reduced ? "minimized animations" : "full animations"}
+            </p>
           </div>
           <div>
             <div className="text-sm font-semibold mb-3 uppercase tracking-wider">🏆 Achievements</div>
@@ -310,6 +329,13 @@ function NecrackApp() {
               })}
             </div>
           </div>
+          <Link
+            to="/admin"
+            onClick={() => setShowMenu(false)}
+            className="block mt-6 text-center text-xs text-muted-foreground hover:text-primary uppercase tracking-widest"
+          >
+            🔐 Admin dashboard
+          </Link>
         </div>
         <button onClick={() => setShowMenu(false)} className="mt-6 w-full py-3 rounded-xl border border-border text-primary font-semibold tracking-wider">
           Close
