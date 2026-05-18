@@ -72,18 +72,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "NECRACK" },
-      { name: "description", content: "Smooth 4D Creations is a dynamic website showcasing 4D models and interactive experiences." },
+      { title: "Lovable App" },
+      { name: "description", content: "Lovable Generated Project" },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "NECRACK" },
-      { property: "og:description", content: "Smooth 4D Creations is a dynamic website showcasing 4D models and interactive experiences." },
+      { property: "og:title", content: "Lovable App" },
+      { property: "og:description", content: "Lovable Generated Project" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "NECRACK" },
-      { name: "twitter:description", content: "Smooth 4D Creations is a dynamic website showcasing 4D models and interactive experiences." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/20b30015-44b6-4c9e-9618-40a94df14fc5/id-preview-0f71a50b--a988a47a-f318-4237-9f1b-5ad77558069a.lovable.app-1778902542480.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/20b30015-44b6-4c9e-9618-40a94df14fc5/id-preview-0f71a50b--a988a47a-f318-4237-9f1b-5ad77558069a.lovable.app-1778902542480.png" },
     ],
     links: [
       {
