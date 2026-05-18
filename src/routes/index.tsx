@@ -41,11 +41,16 @@ type View = "landing" | "portal";
 type Theme = "dark" | "light" | "neon";
 
 function NecrackApp() {
+  const reduced = useReducedMotion();
   const [introDone, setIntroDone] = useState(false);
   const [view, setView] = useState<View>("landing");
   const [theme, setThemeState] = useState<Theme>("dark");
+  const [rmMode, setRmModeState] = useState<RMMode>("system");
+  const themes = useMemo(() => getThemes(), []);
+  const achievements = useMemo(() => getAchievements(), []);
 
   useEffect(() => {
+    setRmModeState(getRMMode());
     try {
       if (sessionStorage.getItem("necrack_intro_seen") === "1") setIntroDone(true);
     } catch {}
