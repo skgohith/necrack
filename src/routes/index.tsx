@@ -1,19 +1,21 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Toaster, toast } from "sonner";
 import { ThreeBackground } from "@/components/ThreeBackground";
 import { TiltCard } from "@/components/TiltCard";
 import { IntroSequence } from "@/components/IntroSequence";
 import { DevCredit } from "@/components/DevCredit";
 import {
-  achievements,
   attendanceUrl,
+  getAchievements,
   getStats,
+  getThemes,
   logUserAccess,
   resultUrl,
   saveStats,
 } from "@/lib/necrack";
+import { getRMMode, setRMMode, useReducedMotion, type RMMode } from "@/lib/reduced-motion";
 
 export const Route = createFileRoute("/")({
   head: () => ({
