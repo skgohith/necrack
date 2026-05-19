@@ -7,7 +7,11 @@ import { TiltCard } from "@/components/TiltCard";
 import { IntroSequence } from "@/components/IntroSequence";
 import { DevCredit } from "@/components/DevCredit";
 import {
+  type Achievement,
+  type ThemeDef,
   attendanceUrl,
+  defaultAchievements,
+  defaultThemes,
   getAchievements,
   getStats,
   getThemes,
@@ -15,6 +19,7 @@ import {
   resultUrl,
   saveStats,
 } from "@/lib/necrack";
+
 import { getRMMode, setRMMode, useReducedMotion, type RMMode } from "@/lib/reduced-motion";
 
 export const Route = createFileRoute("/")({
