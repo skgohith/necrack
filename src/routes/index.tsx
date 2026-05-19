@@ -257,11 +257,8 @@ function NecrackApp() {
                   )}
                 </AnimatePresence>
               </TiltCard>
-              <div className="mt-6 grid grid-cols-3 gap-3 text-center">
-                <Stat label="Accesses" value={stats.totalAccesses} />
-                <Stat label="Themes" value={stats.themesUsed.length} />
-                <Stat label="Trophies" value={stats.unlockedAchievements.length} />
-              </div>
+              {/* Stats (accesses / themes / trophies) moved to admin dashboard */}
+
             </motion.section>
           )}
         </AnimatePresence>
