@@ -489,9 +489,10 @@ function AuditPanel() {
                 <td className="px-3 py-2 text-xs">{l.target}</td>
                 <td className="px-3 py-2 text-xs font-mono">{l.itemId}</td>
                 <td className="px-3 py-2 text-xs text-muted-foreground max-w-[280px] truncate" title={JSON.stringify({ before: l.before, after: l.after })}>
-                  {l.before && <span>was: {short(l.before)} </span>}
-                  {l.after && <span>now: {short(l.after)}</span>}
+                  {l.before !== undefined && <span>was: {short(l.before)} </span>}
+                  {l.after !== undefined && <span>now: {short(l.after)}</span>}
                 </td>
+
               </tr>
             ))}
           </tbody>
