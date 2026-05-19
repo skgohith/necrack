@@ -119,6 +119,46 @@ export function logsToCSV(logs: AccessLog[]): string {
   return [header.join(","), ...rows].join("\n");
 }
 
+export type AuditAction = "create" | "update" | "delete" | "reset";
+export type AuditTarget = "achievement" | "theme";
+export type AuditLog = {
+  timestamp: string;
+  actor: string;
+  action: AuditAction;
+  target: AuditTarget;
+  itemId: string;
+  before?: unknown;
+  after?: unknown;
+  note?: string;
+};
+
+export function getAuditLogs(): AuditLog[] {
+  try {
+    const s = localStorage.getItem(AUDIT_KEY);
+    return s ? JSON.parse(s) : [];
+  } catch { return []; }
+}
+export function pushAuditLog(entry: Omit<AuditLog, "timestamp">) {
+  try {
+    const cur = getAuditLogs();
+    cur.unshift({ ...entry, timestamp: new Date().toISOString() });
+    localStorage.setItem(AUDIT_KEY, JSON.stringify(cur.slice(0, 2000)));
+  } catch {}
+}
+export function clearAuditLogs() {
+  try { localStorage.removeItem(AUDIT_KEY); } catch {}
+}
+export function auditToCSV(logs: AuditLog[]): string {
+  const header = ["timestamp", "actor", "action", "target", "itemId", "before", "after", "note"];
+  const esc = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+  const rows = logs.map(l => [
+    esc(l.timestamp), esc(l.actor), esc(l.action), esc(l.target), esc(l.itemId),
+    esc(JSON.stringify(l.before ?? "")), esc(JSON.stringify(l.after ?? "")), esc(l.note ?? ""),
+  ].join(","));
+  return [header.join(","), ...rows].join("\n");
+}
+
+
 export const attendanceUrl = (encoded: string) =>
   `http://115.241.194.20/sis/Examination/Reports/StudentSearchHTMLReport_student.aspx?R=${encoded}&T=-8584723613578166740`;
 
