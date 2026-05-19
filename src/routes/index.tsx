@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
 import { ThreeBackground } from "@/components/ThreeBackground";
 import { TiltCard } from "@/components/TiltCard";
