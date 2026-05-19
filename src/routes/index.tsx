@@ -388,14 +388,8 @@ function IconBtn({ children, onClick, label }: { children: React.ReactNode; onCl
   );
 }
 
-function Stat({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="glass rounded-xl py-3">
-      <div className="text-2xl font-display text-gradient">{value}</div>
-      <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{label}</div>
-    </div>
-  );
-}
+
+
 
 function Modal({
   open, onClose, title, subtitle, children,
