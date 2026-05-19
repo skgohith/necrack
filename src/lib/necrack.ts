@@ -33,6 +33,8 @@ export const defaultThemes: ThemeDef[] = [
 const ACH_KEY = "necrack_achievements_v1";
 const THEMES_KEY = "necrack_themes_v1";
 const LOGS_KEY = "necrack_access_logs_v1";
+const AUDIT_KEY = "necrack_audit_logs_v1";
+
 
 export function getAchievements(): Achievement[] {
   try {
