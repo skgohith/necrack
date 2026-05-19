@@ -51,8 +51,9 @@ function NecrackApp() {
   const [view, setView] = useState<View>("landing");
   const [theme, setThemeState] = useState<Theme>("dark");
   const [rmMode, setRmModeState] = useState<RMMode>("system");
-  const [themes, setThemes] = useState(() => defaultThemes);
-  const [achievements, setAchievements] = useState(() => defaultAchievements);
+  const [themes, setThemes] = useState<ThemeDef[]>(() => defaultThemes);
+  const [achievements, setAchievements] = useState<Achievement[]>(() => defaultAchievements);
+
 
   useEffect(() => {
     setThemes(getThemes());
