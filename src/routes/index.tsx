@@ -66,7 +66,10 @@ function NecrackApp() {
   const [showResults, setShowResults] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [encoded, setEncoded] = useState("");
-  const [stats, setStats] = useState(() => getStats());
+  // SSR-safe: start with default stats, hydrate from storage in effect.
+  const [stats, setStats] = useState(() => ({ totalAccesses: 0, themesUsed: ["dark"], unlockedAchievements: [] as string[] }));
+  useEffect(() => { setStats(getStats()); }, []);
+
 
   useEffect(() => {
     try {
