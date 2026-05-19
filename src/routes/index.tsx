@@ -1,13 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
 import { ThreeBackground } from "@/components/ThreeBackground";
 import { TiltCard } from "@/components/TiltCard";
 import { IntroSequence } from "@/components/IntroSequence";
 import { DevCredit } from "@/components/DevCredit";
 import {
+  type Achievement,
+  type ThemeDef,
   attendanceUrl,
+  defaultAchievements,
+  defaultThemes,
   getAchievements,
   getStats,
   getThemes,
@@ -15,6 +19,7 @@ import {
   resultUrl,
   saveStats,
 } from "@/lib/necrack";
+
 import { getRMMode, setRMMode, useReducedMotion, type RMMode } from "@/lib/reduced-motion";
 
 export const Route = createFileRoute("/")({
@@ -46,15 +51,19 @@ function NecrackApp() {
   const [view, setView] = useState<View>("landing");
   const [theme, setThemeState] = useState<Theme>("dark");
   const [rmMode, setRmModeState] = useState<RMMode>("system");
-  const themes = useMemo(() => getThemes(), []);
-  const achievements = useMemo(() => getAchievements(), []);
+  const [themes, setThemes] = useState<ThemeDef[]>(() => defaultThemes);
+  const [achievements, setAchievements] = useState<Achievement[]>(() => defaultAchievements);
+
 
   useEffect(() => {
+    setThemes(getThemes());
+    setAchievements(getAchievements());
     setRmModeState(getRMMode());
     try {
       if (sessionStorage.getItem("necrack_intro_seen") === "1") setIntroDone(true);
     } catch {}
   }, []);
+
 
   const finishIntro = () => {
     try { sessionStorage.setItem("necrack_intro_seen", "1"); } catch {}
@@ -66,7 +75,10 @@ function NecrackApp() {
   const [showResults, setShowResults] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [encoded, setEncoded] = useState("");
-  const [stats, setStats] = useState(() => getStats());
+  // SSR-safe: start with default stats, hydrate from storage in effect.
+  const [stats, setStats] = useState(() => ({ totalAccesses: 0, themesUsed: ["dark"], unlockedAchievements: [] as string[] }));
+  useEffect(() => { setStats(getStats()); }, []);
+
 
   useEffect(() => {
     try {
@@ -245,11 +257,8 @@ function NecrackApp() {
                   )}
                 </AnimatePresence>
               </TiltCard>
-              <div className="mt-6 grid grid-cols-3 gap-3 text-center">
-                <Stat label="Accesses" value={stats.totalAccesses} />
-                <Stat label="Themes" value={stats.themesUsed.length} />
-                <Stat label="Trophies" value={stats.unlockedAchievements.length} />
-              </div>
+              {/* Stats (accesses / themes / trophies) moved to admin dashboard */}
+
             </motion.section>
           )}
         </AnimatePresence>
@@ -379,14 +388,8 @@ function IconBtn({ children, onClick, label }: { children: React.ReactNode; onCl
   );
 }
 
-function Stat({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="glass rounded-xl py-3">
-      <div className="text-2xl font-display text-gradient">{value}</div>
-      <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{label}</div>
-    </div>
-  );
-}
+
+
 
 function Modal({
   open, onClose, title, subtitle, children,
