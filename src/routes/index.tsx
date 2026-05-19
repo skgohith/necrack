@@ -46,15 +46,18 @@ function NecrackApp() {
   const [view, setView] = useState<View>("landing");
   const [theme, setThemeState] = useState<Theme>("dark");
   const [rmMode, setRmModeState] = useState<RMMode>("system");
-  const themes = useMemo(() => getThemes(), []);
-  const achievements = useMemo(() => getAchievements(), []);
+  const [themes, setThemes] = useState(() => defaultThemes);
+  const [achievements, setAchievements] = useState(() => defaultAchievements);
 
   useEffect(() => {
+    setThemes(getThemes());
+    setAchievements(getAchievements());
     setRmModeState(getRMMode());
     try {
       if (sessionStorage.getItem("necrack_intro_seen") === "1") setIntroDone(true);
     } catch {}
   }, []);
+
 
   const finishIntro = () => {
     try { sessionStorage.setItem("necrack_intro_seen", "1"); } catch {}
