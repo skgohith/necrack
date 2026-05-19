@@ -24,14 +24,19 @@ function systemPrefers(): boolean {
 }
 
 export function useReducedMotion(): boolean {
-  const [reduced, setReduced] = useState<boolean>(() => {
-    const m = getRMMode();
-    if (m === "on") return true;
-    if (m === "off") return false;
-    return systemPrefers();
-  });
+  // Always start with `false` on first render to match SSR output, then
+  // update from real preferences after hydration to avoid hydration mismatch.
+  const [reduced, setReduced] = useState<boolean>(false);
 
   useEffect(() => {
+    const apply = () => {
+      const m = getRMMode();
+      if (m === "on") return setReduced(true);
+      if (m === "off") return setReduced(false);
+      setReduced(systemPrefers());
+    };
+    apply();
+
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const recompute = () => {
       const m = getRMMode();
