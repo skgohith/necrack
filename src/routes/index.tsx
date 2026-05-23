@@ -155,8 +155,6 @@ function NecrackApp() {
         {!introDone && <IntroSequence key="intro" onDone={finishIntro} />}
       </AnimatePresence>
 
-      <DevCredit floating />
-
       {/* Floating watermark */}
       <div
         aria-hidden
@@ -172,13 +170,13 @@ function NecrackApp() {
           initial={reduced ? false : { opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: reduced ? 0.01 : 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto grid min-h-[calc(100dvh-1.5rem)] w-full max-w-7xl grid-rows-[auto_1fr_auto] overflow-hidden rounded-[2rem] border border-border bg-card/40 shadow-2xl backdrop-blur-2xl sm:min-h-[calc(100dvh-2.5rem)] lg:min-h-[calc(100dvh-3.5rem)]"
+          className="mx-auto grid min-h-[calc(100dvh-1.5rem)] w-full max-w-7xl grid-rows-[auto_1fr_auto] overflow-hidden rounded-3xl border border-border bg-card/40 shadow-2xl backdrop-blur-2xl sm:min-h-[calc(100dvh-2.5rem)] sm:rounded-[2rem] lg:min-h-[calc(100dvh-3.5rem)]"
         >
           <header className="flex items-center justify-between gap-3 border-b border-border/70 px-4 py-3 sm:px-6">
             <button onClick={() => setView("landing")} className="flex min-w-0 items-center gap-3 text-left" aria-label="Open home screen">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary/15 text-xl ring-1 ring-primary/30">💀</span>
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary/15 text-xl ring-1 ring-primary/30 sm:h-12 sm:w-12">💀</span>
               <span className="min-w-0">
-                <span className="block truncate font-display text-lg font-bold text-gradient sm:text-2xl">NECRACK</span>
+                <span className="block truncate font-display text-base font-bold text-gradient sm:text-2xl">NECRACK</span>
                 <span className="block truncate text-[10px] uppercase tracking-[0.22em] text-muted-foreground sm:text-xs">Academic portal</span>
               </span>
             </button>
@@ -312,7 +310,7 @@ function NecrackApp() {
             </section>
           </div>
 
-          <footer className="flex flex-col gap-2 border-t border-border/70 px-4 py-3 text-center text-[10px] uppercase tracking-[0.22em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:text-left">
+          <footer className="flex flex-col gap-2 border-t border-border/70 px-4 py-3 text-center text-[9px] uppercase tracking-[0.18em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:text-[10px] sm:text-left">
             <span>Responsive application shell</span>
             <span>Developed and maintained by <strong className="text-primary" dir="rtl">محمد جوز باشا</strong></span>
           </footer>
