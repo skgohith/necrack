@@ -167,55 +167,102 @@ function NecrackApp() {
         </span>
       </div>
 
-      {/* Top bar (only in portal) */}
-      <AnimatePresence>
-        {view === "portal" && (
-          <motion.div
-            initial={{ y: -40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -40, opacity: 0 }}
-            className="fixed top-5 right-5 z-50 flex gap-2"
-          >
-            <IconBtn onClick={() => setShowMenu(true)} label="Open settings menu">☰</IconBtn>
-            <IconBtn onClick={handleBack} label="Back to home">🏠</IconBtn>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <main className="relative min-h-dvh px-3 py-3 sm:px-5 sm:py-5 lg:px-8 lg:py-7">
+        <motion.div
+          initial={reduced ? false : { opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: reduced ? 0.01 : 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="mx-auto grid min-h-[calc(100dvh-1.5rem)] w-full max-w-7xl grid-rows-[auto_1fr_auto] overflow-hidden rounded-[2rem] border border-border bg-card/40 shadow-2xl backdrop-blur-2xl sm:min-h-[calc(100dvh-2.5rem)] lg:min-h-[calc(100dvh-3.5rem)]"
+        >
+          <header className="flex items-center justify-between gap-3 border-b border-border/70 px-4 py-3 sm:px-6">
+            <button onClick={() => setView("landing")} className="flex min-w-0 items-center gap-3 text-left" aria-label="Open home screen">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary/15 text-xl ring-1 ring-primary/30">💀</span>
+              <span className="min-w-0">
+                <span className="block truncate font-display text-lg font-bold text-gradient sm:text-2xl">NECRACK</span>
+                <span className="block truncate text-[10px] uppercase tracking-[0.22em] text-muted-foreground sm:text-xs">Academic portal</span>
+              </span>
+            </button>
+            <nav className="flex shrink-0 items-center gap-2">
+              {view === "portal" && <IconBtn onClick={handleBack} label="Back to home">⌂</IconBtn>}
+              <IconBtn onClick={() => setShowMenu(true)} label="Open settings menu">☰</IconBtn>
+              <Link
+                to="/admin"
+                className="hidden h-11 items-center rounded-full border border-border px-4 text-xs font-bold uppercase tracking-[0.22em] text-muted-foreground transition-colors hover:border-primary hover:text-primary sm:flex"
+              >
+                Admin
+              </Link>
+            </nav>
+          </header>
 
-      <main className="relative min-h-screen flex items-center justify-center px-4 py-10">
+          <div className="grid min-h-0 grid-cols-1 lg:grid-cols-[0.95fr_1.25fr]">
+            <aside className="relative hidden overflow-hidden border-r border-border/70 p-6 lg:flex lg:flex-col lg:justify-between xl:p-8">
+              <div className="absolute inset-x-6 top-8 h-px bg-gradient-primary opacity-60" />
+              <div>
+                <p className="font-display text-xs uppercase tracking-[0.35em] text-primary">Secure console</p>
+                <div className="mt-8 grid gap-3">
+                  <StatusPill label="Portal" value={view === "portal" ? "Online" : "Ready"} />
+                  <StatusPill label="Motion" value={reduced ? "Reduced" : "Full 4D"} />
+                  <StatusPill label="Theme" value={theme} />
+                </div>
+              </div>
+              <div className="rounded-3xl border border-border bg-background/35 p-5">
+                <div className="mb-4 flex items-center justify-between text-xs uppercase tracking-[0.25em] text-muted-foreground">
+                  <span>Access route</span>
+                  <span className="text-primary">Live</span>
+                </div>
+                <div className="space-y-3 font-display text-sm text-foreground/90">
+                  <div className="flex items-center gap-3"><span className="text-primary">01</span><span>Register ID</span></div>
+                  <div className="flex items-center gap-3"><span className="text-primary">02</span><span>Generate secure links</span></div>
+                  <div className="flex items-center gap-3"><span className="text-primary">03</span><span>Open records</span></div>
+                </div>
+              </div>
+            </aside>
+
+            <section className="min-h-0 overflow-y-auto px-4 py-6 sm:px-8 sm:py-8 lg:px-10 xl:px-14">
         <AnimatePresence mode="wait">
           {view === "landing" ? (
             <motion.section
               key="landing"
-              initial={{ opacity: 0, scale: 0.9, rotateX: -15 }}
-              animate={{ opacity: 1, scale: 1, rotateX: 0 }}
-              exit={{ opacity: 0, scale: 0.85, rotateX: 15 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full max-w-xl text-center perspective-1000"
+              initial={reduced ? false : { opacity: 0, x: 24, scale: 0.98 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={reduced ? { opacity: 0 } : { opacity: 0, x: -24, scale: 0.98 }}
+              transition={{ duration: reduced ? 0.01 : 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="flex min-h-full flex-col justify-center py-4 text-center lg:text-left"
             >
-              <SkullTitle subtitle="Secure Academic Portal" />
-              <motion.button
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={handleStart}
-                disabled={starting}
-                className="mt-10 px-12 py-5 rounded-2xl bg-gradient-primary text-primary-foreground font-display font-bold text-lg tracking-[0.3em] glow disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                {starting ? "⏳ LOADING…" : "🚀 START"}
-              </motion.button>
-              <p className="mt-8 text-xs uppercase tracking-[0.4em] text-muted-foreground">
-                Move your cursor · Tilt the depth
-              </p>
+              <div className="mx-auto w-full max-w-3xl lg:mx-0">
+                <SkullTitle subtitle="Secure Academic Portal" align="app" />
+                <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                  <StatusPill label="Device" value="Auto fit" compact />
+                  <StatusPill label="Mode" value="Portal" compact />
+                  <StatusPill label="Build" value="4D UI" compact />
+                </div>
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:justify-start">
+                  <motion.button
+                    whileHover={reduced ? undefined : { scale: 1.02, y: -2 }}
+                    whileTap={reduced ? undefined : { scale: 0.98 }}
+                    onClick={handleStart}
+                    disabled={starting}
+                    className="min-h-14 rounded-2xl bg-gradient-primary px-8 py-4 font-display text-base font-bold tracking-[0.28em] text-primary-foreground glow disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {starting ? "⏳ LOADING…" : "🚀 ENTER APP"}
+                  </motion.button>
+                  <button onClick={() => setShowMenu(true)} className="min-h-14 rounded-2xl border border-border px-8 py-4 font-bold uppercase tracking-[0.22em] text-foreground/80 transition-colors hover:border-primary hover:text-primary">
+                    Settings
+                  </button>
+                </div>
+              </div>
             </motion.section>
           ) : (
             <motion.section
               key="portal"
-              initial={{ opacity: 0, scale: 0.92, rotateY: 25 }}
-              animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-              exit={{ opacity: 0, scale: 0.92, rotateY: -25 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full max-w-xl perspective-1000"
+              initial={reduced ? false : { opacity: 0, x: 24, scale: 0.98 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={reduced ? { opacity: 0 } : { opacity: 0, x: -24, scale: 0.98 }}
+              transition={{ duration: reduced ? 0.01 : 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="flex min-h-full flex-col justify-center py-4"
             >
-              <SkullTitle subtitle="Access your academic records" />
-              <TiltCard className="glass rounded-3xl p-8 md:p-10 mt-8 will-change-transform">
+              <SkullTitle subtitle="Access your academic records" align="app" />
+              <TiltCard className="mt-7 w-full max-w-2xl rounded-3xl border border-border bg-background/45 p-5 shadow-2xl backdrop-blur-xl will-change-transform sm:p-8 md:p-10">
                 <label className="block uppercase tracking-[0.2em] text-xs font-semibold mb-3 text-muted-foreground">
                   Registration Number
                 </label>
@@ -262,6 +309,14 @@ function NecrackApp() {
             </motion.section>
           )}
         </AnimatePresence>
+            </section>
+          </div>
+
+          <footer className="flex flex-col gap-2 border-t border-border/70 px-4 py-3 text-center text-[10px] uppercase tracking-[0.22em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:text-left">
+            <span>Responsive application shell</span>
+            <span>Developed and maintained by <strong className="text-primary" dir="rtl">محمد جوز باشا</strong></span>
+          </footer>
+        </motion.div>
       </main>
 
       {/* Results Modal */}
