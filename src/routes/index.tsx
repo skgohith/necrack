@@ -5,7 +5,6 @@ import { Toaster, toast } from "sonner";
 import { ThreeBackground } from "@/components/ThreeBackground";
 import { TiltCard } from "@/components/TiltCard";
 import { IntroSequence } from "@/components/IntroSequence";
-import { DevCredit } from "@/components/DevCredit";
 import {
   type Achievement,
   type ThemeDef,
