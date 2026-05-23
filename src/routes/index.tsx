@@ -409,20 +409,30 @@ function NecrackApp() {
   );
 }
 
-function SkullTitle({ subtitle }: { subtitle: string }) {
+function StatusPill({ label, value, compact = false }: { label: string; value: string; compact?: boolean }) {
   return (
-    <div className="flex flex-col items-center">
+    <div className={`rounded-2xl border border-border bg-background/35 ${compact ? "p-3" : "p-4"}`}>
+      <div className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">{label}</div>
+      <div className="mt-1 truncate font-display text-sm font-bold capitalize text-primary sm:text-base">{value}</div>
+    </div>
+  );
+}
+
+function SkullTitle({ subtitle, align = "center" }: { subtitle: string; align?: "center" | "app" }) {
+  const aligned = align === "app" ? "items-center text-center lg:items-start lg:text-left" : "items-center text-center";
+  return (
+    <div className={`flex flex-col ${aligned}`}>
       <motion.div
         animate={{ y: [0, -14, 0], rotateZ: [0, 3, -3, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        className="text-[clamp(4rem,12vw,7rem)] animate-pulse-glow"
+        className="text-[clamp(3.5rem,10vw,6.5rem)] animate-pulse-glow"
       >
         💀
       </motion.div>
-      <h1 className="font-display text-[clamp(2.5rem,8vw,4.5rem)] font-bold text-gradient leading-none mt-2">
+      <h1 className="font-display text-[clamp(2.4rem,7vw,5rem)] font-bold text-gradient leading-none mt-2">
         NECRACK
       </h1>
-      <p className="mt-2 text-xs sm:text-sm uppercase tracking-[0.4em] text-muted-foreground">
+      <p className="mt-3 max-w-xl text-xs uppercase tracking-[0.3em] text-muted-foreground sm:text-sm">
         {subtitle}
       </p>
     </div>
