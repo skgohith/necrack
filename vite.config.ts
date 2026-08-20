@@ -15,6 +15,6 @@ export default defineConfig({
   tanstackStart: {
     server: { entry: "server" },
   },
-  cloudflare: isVercelBuild ? false : undefined,
+  
   plugins: isVercelBuild ? [nitro({ preset: "vercel" })] : [],
 });
